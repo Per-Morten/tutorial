@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 
-
-
 const PersonSchema = mongoose.Schema({
-    fisrtname: {
+    firstname: {
         type: String,
         required: true,
     },
@@ -19,28 +17,24 @@ const PersonSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-
-
 });
 
 
 PersonSchema.statics.findByName = function(firstname) {
     return new Promise((resolve, reject) => {
         this.findOne({firstname}).exec()
-        .then(person => resolve(person))
-        .catch(err => reject(err));
+            .then(person => resolve(person))
+            .catch(err => reject(err));
     });
 }
 
-PersonSchema.statics.findPersonSync = async function(firstname) {
-    const person = await this.findOne({firstname}).exec();
-    if(!person) {
-        return {
-            error: 'Could not find the user',
-        };
-    } else {
-        return person;
-    }
+PersonSchema.statics.getAll = function() {
+    return new Promise((resolve, reject) => {
+        this.find({}).exec()
+            .then(people => resolve(people))
+            .catch(err => reject(err));
+    });
 }
+
 
 module.exports = mongoose.model('PersonModel', PersonSchema, 'people');

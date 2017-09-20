@@ -1,17 +1,20 @@
-const Person = require('../models/Person');
-
+const PersonModel = require('../models/Person');
+const errors = require('../helpers/error');
 module.exports = (api) => {
-    api.route('/person/:id')
+    api.route('/people')
         .get((req, res) => {
-            res.send(`Getting person with id: ${req.params.id}`);
+            res.send('Return all people! <:) 3===D~~~');
         })
         .post((req, res) => {
-            res.send('Create a person');
-        })
-        .put((req, res) => {
-            res.send('Update a person');
-        })
-        .delete((req, res) => {
-            res.send('Delete a person');
+            let body = req.body;
+            if(body.firstname && body.lastname && body.address && body.postcode) {
+                
+                PersonModel.create(body)
+                    .then(user => res.send(user))
+                    .catch(err => res.json(errors.ERROR_500));
+
+            } else {
+                return res.json(errors.INVALID_INPUT);
+            }
         })
 };
