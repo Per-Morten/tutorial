@@ -30,11 +30,8 @@ class App {
      * API endpoints */
     let router = express.Router();
     // placeholder route handler
-    router.get('/', (req, res, next) => {
-      res.json({
-        message: 'Hello World!'
-      });
-    });
+    require('../controllers/People')(router);
+
     this.express.use('/', router);
   }
 
